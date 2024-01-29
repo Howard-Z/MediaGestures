@@ -51,8 +51,8 @@ def record_multiple(directory: str, seconds: int, count: int, resolution: tuple,
         cap.set(4, resolution[1])
 
         for i in range(1, count + 1):
-            filepath = f'{directory}/{i}.avi'
-            fourcc = cv2.VideoWriter_fourcc(*'XVID')
+            filepath = f'{directory}/{i}.mp4'
+            fourcc = cv2.VideoWriter_fourcc(*'mp4v')
             out = cv2.VideoWriter(filepath, fourcc, fps, resolution)
 
             if i < count + 1:
@@ -67,15 +67,15 @@ def record_multiple(directory: str, seconds: int, count: int, resolution: tuple,
 
             print(f"Recording video {i}")
             for _ in range(int(seconds * fps)):
-                if cv2.waitKey(1) & 0xFF == ord('q'):
-                    break
+                # if cv2.waitKey(1) & 0xFF == ord('q'):
+                #     break
 
                 ret, frame = cap.read()
                 if not ret:
                     break
                 out.write(frame)
-                if frame is not None:
-                    cv2.imshow(f'Frame', frame)
+                # if frame is not None:
+                    # cv2.imshow(f'Frame', frame)
 
             print(f"Video {i} completed.")
             out.release()
