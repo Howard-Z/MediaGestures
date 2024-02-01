@@ -8,14 +8,14 @@ import time
 import math
 import numpy as np
 
-model_path = '/Users/howardzhu/Documents/git_repos/MediaGestures/hand_landmarker.task'
+model_path = 'C:/Users/Howard/Documents/Git_Repos/MediaGestures/hand_landmarker.task'
 
 BaseOptions = mp.tasks.BaseOptions
 HandLandmarker = mp.tasks.vision.HandLandmarker
 HandLandmarkerOptions = mp.tasks.vision.HandLandmarkerOptions
 HandLandmarkerResult = mp.tasks.vision.HandLandmarkerResult
 VisionRunningMode = mp.tasks.vision.RunningMode
-vid = cv2.VideoCapture(1) 
+vid = cv2.VideoCapture(0) 
 
 #The stupid global object to have the markers available to all functions
 markers = None

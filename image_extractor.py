@@ -1,9 +1,11 @@
 import mediapipe as mp
+from mediapipe.tasks import python
+from mediapipe.tasks.python import vision
 import cv2
-import math
+import numpy as np
 from mediapipe import solutions
 from mediapipe.framework.formats import landmark_pb2
-import numpy as np
+from utils.parse_hand_landmarker import *
 
 BaseOptions = mp.tasks.BaseOptions
 HandLandmarker = mp.tasks.vision.HandLandmarker
@@ -11,9 +13,6 @@ HandLandmarkerOptions = mp.tasks.vision.HandLandmarkerOptions
 VisionRunningMode = mp.tasks.vision.RunningMode
 
 model_path = 'C:/Users/Howard/Documents/Git_Repos/MediaGestures/hand_landmarker.task'
-
-cap = cv2.VideoCapture('./raw_videos/pinch/trimmed_2024-01-30_02-13-07.mp4')
-
 
 MARGIN = 10  # pixels
 FONT_SIZE = 1
@@ -56,43 +55,59 @@ def draw_landmarks_on_image(rgb_image, detection_result):
 
   return annotated_image
 
-
-
-# Create a hand landmarker instance with the video mode:
+# Create a hand landmarker instance with the image mode:
 options = HandLandmarkerOptions(
     base_options=BaseOptions(model_asset_path=model_path),
     num_hands = 2,
-    running_mode=VisionRunningMode.VIDEO)
+    running_mode=VisionRunningMode.IMAGE)
 with HandLandmarker.create_from_options(options) as landmarker:
-    # The landmarker is initialized. Use it here.
-  
-    # Use OpenCV’s VideoCapture to load the input video.
+    img = cv2.imread("test.jpg")
+    img = cv2.resize(img, (640, 480))
+    #mp_image = mp.Image.create_from_file('/test.jpg')
+    mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=img)
+    hand_landmarker_result = landmarker.detect(mp_image)
+    annotated_image = draw_landmarks_on_image(img, hand_landmarker_result)
+    print(hand_landmarker_result)
+    left, right = parser(handLandmarker= hand_landmarker_result)
+    left = np.array(left)
+    right = np.array(right)
+    print("left")
+    if left is None:
+       print("Left is None")
+    else:
+       print(left)
+       print("length = ", len(left))
 
-    # Load the frame rate of the video using OpenCV’s CV_CAP_PROP_FPS
-    # You’ll need it to calculate the timestamp for each frame.
+    print("right")
+    if right is None:
+       print("Right is None")
+    else:
+       print(right)
+       print("length = ", len(right))
+    for i in range(0, len(left), 3):
+       output = "("
+       output += str(left[i])
+       output += ", "
+       output += str(left[i + 1])
+       output += ", "
+       output += str(left[i + 2])
+       # output += "0.0"
+       output += ")"
+       print(output)
+    
+    print("right")
+    for i in range(0, len(right), 3):
+       output = "("
+       output += str(right[i])
+       output += ", "
+       output += str(right[i + 1])
+       output += ", "
+       output += str(right[i + 2])
+       # output += "0.0"
+       output += ")"
+       print(output)
 
-    # Loop through each frame in the video using VideoCapture#read()
-    fps = cap.get(cv2.CAP_PROP_FPS)
-    #frame_gap = (1000//fps)
-    frame_gap = 1
-    print(frame_gap)
-    ts = 0
-    count = 0
-    while cap.isOpened():
-        ret, frame = cap.read()
-        # if frame is read correctly ret is True
-        if not ret:
-            print("Can't receive frame (stream end?). Exiting ...")
-            break
-        if cv2.waitKey(int(frame_gap)) == ord('q'):
-            break
-        mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=frame)
-        hand_landmarker_result = landmarker.detect_for_video(mp_image, math.floor((1000/fps) * count))
-        print(hand_landmarker_result)
-        annotated_image = draw_landmarks_on_image(frame, hand_landmarker_result)
-        cv2.imshow('frame', annotated_image)
-        count += 1
-
-    # Convert the frame received from OpenCV to a MediaPipe’s Image object.
-cap.release()
-cv2.destroyAllWindows()
+    # cv2.imshow("AHHH", annotated_image)
+    # k = cv2.waitKey(0) & 0xFF
+    
+    
