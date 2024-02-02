@@ -1,25 +1,18 @@
 import mediapipe as mp
 from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
-from mediapipe.framework.formats import landmark_pb2
-from mediapipe import solutions
 import cv2
-import time
-import math
 import numpy as np
-
-model_path = 'C:/Users/Howard/Documents/Git_Repos/MediaGestures/hand_landmarker.task'
+from mediapipe import solutions
+from mediapipe.framework.formats import landmark_pb2
+from utils.parse_hand_landmarker import *
 
 BaseOptions = mp.tasks.BaseOptions
 HandLandmarker = mp.tasks.vision.HandLandmarker
 HandLandmarkerOptions = mp.tasks.vision.HandLandmarkerOptions
-HandLandmarkerResult = mp.tasks.vision.HandLandmarkerResult
 VisionRunningMode = mp.tasks.vision.RunningMode
-vid = cv2.VideoCapture(0) 
 
-#The stupid global object to have the markers available to all functions
-markers = None
-
+model_path = '/Users/howardzhu/Documents/git_repos/MediaGestures/hand_landmarker.task'
 
 MARGIN = 10  # pixels
 FONT_SIZE = 1
@@ -62,39 +55,59 @@ def draw_landmarks_on_image(rgb_image, detection_result):
 
   return annotated_image
 
-# Create a hand landmarker instance with the live stream mode:
-def print_result(result: HandLandmarkerResult, output_image: mp.Image, timestamp_ms: int):
-    global markers
-    #pulling the markers out of the callback
-    print(result)
-    markers = result
-
+# Create a hand landmarker instance with the image mode:
 options = HandLandmarkerOptions(
     base_options=BaseOptions(model_asset_path=model_path),
     num_hands = 2,
-    running_mode=VisionRunningMode.LIVE_STREAM,
-    result_callback=print_result)
+    running_mode=VisionRunningMode.IMAGE)
 with HandLandmarker.create_from_options(options) as landmarker:
-  # The landmarker is initialized. Use it here.
-    start = time.time()
-    while(True):
-        current = math.floor((time.time() - start) * 1000)
-        if cv2.waitKey(1) & 0xFF == ord('q'): 
-            break
-        ret, frame = vid.read()
-        if frame is not None:
-            #cv2.imshow('frame', frame)
-            mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=frame)
-            landmarker.detect_async(mp_image, current)
-            #drawing the frame with annotated markers
-            if markers is not None:
-                annotated_image = draw_landmarks_on_image(frame, markers)
-                cv2.imshow("AHHH", annotated_image)
-            else:
-                cv2.imshow("AHHH", frame)
+    img = cv2.imread("test.jpg")
+    img = cv2.resize(img, (640, 480))
+    #mp_image = mp.Image.create_from_file('/test.jpg')
+    mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=img)
+    hand_landmarker_result = landmarker.detect(mp_image)
+    annotated_image = draw_landmarks_on_image(img, hand_landmarker_result)
+    print(hand_landmarker_result)
+    left, right = parser(handLandmarker= hand_landmarker_result)
+    left = np.array(left)
+    right = np.array(right)
+    print("left")
+    if left is None:
+       print("Left is None")
+    else:
+       print(left)
+       print("length = ", len(left))
 
+    print("right")
+    if right is None:
+       print("Right is None")
+    else:
+       print(right)
+       print("length = ", len(right))
+    for i in range(0, len(left), 3):
+       output = "("
+       output += str(left[i])
+       output += ", "
+       output += str(left[i + 1])
+       output += ", "
+       output += str(left[i + 2])
+       # output += "0.0"
+       output += ")"
+       print(output)
+    
+    print("right")
+    for i in range(0, len(right), 3):
+       output = "("
+       output += str(right[i])
+       output += ", "
+       output += str(right[i + 1])
+       output += ", "
+       output += str(right[i + 2])
+       # output += "0.0"
+       output += ")"
+       print(output)
 
-# After the loop release the cap object 
-vid.release() 
-# Destroy all the windows 
-cv2.destroyAllWindows() 
+    # cv2.imshow("AHHH", annotated_image)
+    # k = cv2.waitKey(0) & 0xFF
+    
+    
