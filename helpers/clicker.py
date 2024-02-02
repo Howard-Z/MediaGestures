@@ -3,6 +3,7 @@ from time import sleep
 import argparse
 
 def click_n_times(n: int):
+    print("Initializing...")
     for i in range(1, n + 1):
         if i < n + 1:
             sleep(2)
@@ -16,7 +17,13 @@ def click_n_times(n: int):
 
         print(f"Recording video {i}")
         pyautogui.click()
-        sleep(4)
+        print(f"3 seconds left...", end='\r')
+        sleep(1)
+        print(f"2 seconds left...", end='\r')
+        sleep(1)
+        print(f"1 second left... ", end='\r')
+        sleep(2)
+        print("                  ", end='\r')
         pyautogui.click()
         print(f"Video {i} completed.")
     print("Done recording.")
