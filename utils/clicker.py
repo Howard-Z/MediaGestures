@@ -2,6 +2,7 @@ import pyautogui
 from time import sleep
 import argparse
 
+
 def click_n_times(n: int):
     print("Initializing...")
     for i in range(1, n + 1):
@@ -37,6 +38,7 @@ def main():
 
     num_clicks = args.num_clicks
     click_n_times(num_clicks)
-    
+
+
 if __name__ == '__main__':
     main()
