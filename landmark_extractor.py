@@ -10,7 +10,7 @@ HandLandmarker = mp.tasks.vision.HandLandmarker
 HandLandmarkerOptions = mp.tasks.vision.HandLandmarkerOptions
 VisionRunningMode = mp.tasks.vision.RunningMode
 
-model_path = 'C:/Users/Howard/Documents/Git_Repos/MediaGestures/hand_landmarker.task'
+model_path = '/Users/howardzhu/Documents/git_repos/MediaGestures/hand_landmarker.task'
 
 cap = cv2.VideoCapture('./raw_videos/pinch/trimmed_2024-01-30_02-13-07.mp4')
 
