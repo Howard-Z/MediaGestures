@@ -6,7 +6,7 @@ import sys
 
 base_path = os.curdir
 sys.path.insert(0, base_path)
-from utils.get_root_dir import *
+from utils.get_root_dir import get_root_dir
 
 
 
