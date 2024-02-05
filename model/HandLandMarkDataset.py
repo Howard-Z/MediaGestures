@@ -2,7 +2,12 @@ import os
 from torch.utils.data import Dataset, DataLoader
 import numpy as np
 import torch
-from utils.get_root_dir import get_root_dir
+import sys
+
+base_path = os.curdir
+sys.path.insert(0, base_path)
+from utils.get_root_dir import *
+
 
 
 class HandLandmarkDataset(Dataset):
@@ -20,10 +25,11 @@ class HandLandmarkDataset(Dataset):
     def __init__(self, root, transform = None):
         self.root = root
         self.transform = transform
-        self.len = self.crawler(root)
-        self.file_paths = []
         self.labels = []
-
+        self.file_paths = []
+        self.len = self.crawler(root)
+        
+        
     def __len__(self):
         return self.len
     
@@ -36,7 +42,9 @@ class HandLandmarkDataset(Dataset):
         return sample, label
         
 
-tester = HandLandmarkDataset(get_root_dir() + "/parsed_data")
-sample, label = tester[5]
+# tester = HandLandmarkDataset(get_root_dir() + "/parsed_data")
+# temp = os.path.join(get_root_dir(), "parsed_data")
+tester = HandLandmarkDataset(os.path.join(get_root_dir(), "parsed_data"))
+sample, label = tester[0]
 print(sample)
 print(label)

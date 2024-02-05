@@ -33,3 +33,26 @@ OBS Studio or your recording software should be configured as the following:
 
 ### Video Standardizing
 Once recording is done, gather all the video files into the same folder.  Make sure that the folder does not contain any other files, other than the recorded videos.  Make a copy of `./helpers/trim_video.py`, into the folder with the videos, and double click to run it.  It will create a new folder titled `trimmed_videos` that contains a copy of all the videos in the folder, trimmed down to exactly three seconds (90 frames total).  Save these videos as training data.  You can delete the unprocessed videos.
+
+## Data Processing
+Data processing is done by a couple of scripts located in the `./model` directory
+
+**Dependencies:**
+Data processing depends on the following python files:
+* `./utils/VideoParser.py`
+* `./utils/process_video.py`
+* `./model/HandLandMarkDataset.py`
+
+### Running
+After you have recorded your training videos. Move them under the directory `./raw_videos` under their correct class folder. For example, if you just recoreded a pinch gesture called "pinch1.mp4", then you would move it to `./raw_videos/pinch/pinch1.mp4`
+
+Once you have moved all of the videos, run `VideoParser.py`. This will take all the videos, load them, and then pass them to `process_video.py` for processing each frame. They will then get saved as a numpy array to disk with a .npy file.
+
+Note: the directory structure of the `parsed_data` folder will mirror the folder structure of `raw_videos`. Each video will get their own folder and each frame will be saved in one or two files depending on how many hands are present.
+
+The naming scheme of data files are "frameNum-handedness.npy"
+
+After the parser is finished you can proceed to the dataset.
+
+### Loading the dataset
+The `HandLandMarkDataset.py` file contains the necessary class derivation to be a valid dataset class for pytorch.

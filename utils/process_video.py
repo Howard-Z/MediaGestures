@@ -6,11 +6,11 @@ from mediapipe.framework.formats import landmark_pb2
 import numpy as np
 import sys
 import os
-from utils.get_root_dir import get_root_dir
-
-base_path = os.curdir
-sys.path.insert(0, base_path)
-from utils.parse_hand_landmarker import parser
+from parse_hand_landmarker import parser
+from get_root_dir import *
+# base_path = os.curdir
+# sys.path.insert(0, base_path)
+# from utils.parse_hand_landmarker import parser
 
 BaseOptions = mp.tasks.BaseOptions
 HandLandmarker = mp.tasks.vision.HandLandmarker
