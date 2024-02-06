@@ -3,6 +3,10 @@ import sys
 import time
 from process_video import*
 from get_root_dir import *
+if sys.platform == 'darwin':
+    slash = '/'
+elif sys.platform == 'win32' or sys.platform == 'cygwin':
+    slash = '\\'
 
 #potentially breaking
 #base_path = os.curdir
@@ -29,7 +33,8 @@ for root, d_names, f_names in os.walk(raw_path):
         temp = os.path.join(root, f)
         removed = root.replace("raw_videos", "parsed_data")
         #parsed_paths.append(parsed_path + removed + "\\" + f)
-        parsed_paths.append(removed + "\\" + f)
+        parsed_paths.append(removed + slash + f)
+        #parsed_paths.append(removed + "\\" + f)
         #new_dirs.add(parsed_path + removed)
         new_dirs.add(removed)
         raw_paths.append(temp)
@@ -50,6 +55,8 @@ for i, video in enumerate(raw_paths):
     try:
         os.mkdir(os.path.abspath(extension_remover(parsed_paths[i])))
     except FileExistsError:
+        pass
+    if ".DS_Store" in video:
         continue
     frames = process_video(video)
     # print(frames.shape)
@@ -61,7 +68,8 @@ for i, video in enumerate(raw_paths):
             # print(frame[0])
             pass
         else:
-            np.save(temp + "/"+ str(j) + "-l", frame[0])
+            #np.save(temp + "/"+ str(j) + "-l", frame[0])
+            np.save(temp + slash + str(j) + "-l", frame[0])
             # print("Left")
             # print(frame[0])
 
@@ -71,6 +79,7 @@ for i, video in enumerate(raw_paths):
             pass
         else:
             # print(temp)
-            np.save(temp + "/" + str(j) + "-r", frame[1])
+            #np.save(temp + "/" + str(j) + "-r", frame[1])
+            np.save(temp + slash + str(j) + "-r", frame[0])
             # print("right")
             # print(frame[1])
