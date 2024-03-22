@@ -29,6 +29,7 @@ def train(model, train_loader, val_loader, optimizer, criterion, device, num_epo
 
         # Use tqdm to display a progress bar during training
         with tqdm(total=len(train_loader), desc=f'Epoch {epoch + 1}/{num_epochs}') as pbar:
+            i = 0
             for inputs, labels in train_loader:
                 # Move inputs and labels to device
                 inputs = inputs.to(device)
@@ -40,7 +41,8 @@ def train(model, train_loader, val_loader, optimizer, criterion, device, num_epo
                 # Compute the logits and loss
                 logits = model(inputs)
                 loss = criterion(logits, labels)
-
+                if (i % 20 == 0): print(str(i) + " " + str(loss))
+                i += 1
                 # Backpropagate the loss
                 loss.backward()
 
