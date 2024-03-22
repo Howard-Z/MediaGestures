@@ -37,6 +37,7 @@ class HandLandmarkDataset(Dataset):
         if torch.is_tensor(idx):
             idx = idx.tolist()
         sample = np.load(self.file_paths[idx], allow_pickle=True)
+        sample = sample.astype(np.float32)
         label = self.labels[idx]
 
         return sample, label
