@@ -5,6 +5,7 @@ import torch
 
 NUM_LABELS = 2
 
+
 class MediaGesture(nn.Module):
     def __init__(self):
         super().__init__()
@@ -14,13 +15,13 @@ class MediaGesture(nn.Module):
 
         self.fc1 = nn.Linear(63, 32)
         self.fc2 = nn.Linear(32, 16)
-        self.fc3 = nn.Linear(16, NUM_LABELS)
+        self.fc3 = nn.Linear(16, 8)
+        self.fc4 = nn.Linear(8, NUM_LABELS)
 
         torch.nn.init.xavier_uniform_(self.fc1.weight, gain=nn.init.calculate_gain('relu'))
         torch.nn.init.xavier_uniform_(self.fc2.weight, gain=nn.init.calculate_gain('relu'))
         torch.nn.init.xavier_uniform_(self.fc3.weight, gain=nn.init.calculate_gain('relu'))
-
-        self.relu = nn.ReLU()
+        self.relu = nn.LeakyReLU()
         
 
     def forward(self, x):
@@ -29,8 +30,27 @@ class MediaGesture(nn.Module):
         out = self.fc2(out)
         out = self.relu(out)
         out = self.fc3(out)
+        out = self.relu(out)
+        out = self.fc4(out)
         return out
-    
+
+def seed_everything(seed: int):
+    import os
+    import random
+
+    import numpy as np
+    import torch
+    random.seed(seed)
+    os.environ['PYTHONHASHSEED'] = str(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed(seed)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = True
+
+# seed everything
+seed_everything(0)
+
 #Define the model, optimizer, and criterion (loss_fn)
 model = MediaGesture()
 
@@ -50,7 +70,7 @@ train_dataset = HandLandmarkDataset(os.path.join(get_root_dir(), "parsed_data"))
 val_dataset = HandLandmarkDataset(os.path.join(get_root_dir(), "parsed_data"))
 
 # Define the batch size and number of workers
-batch_size = 1
+batch_size = 64
 num_workers = 0
 
 # Define the data loaders
@@ -63,9 +83,9 @@ val_loader = torch.utils.data.DataLoader(
 # Train the model
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-train(model, train_loader, val_loader, optimizer, criterion, device, num_epochs=2)
+train(model, train_loader, val_loader, optimizer, criterion, device, num_epochs=10)
 
-print(train_dataset.len)
-print(train_dataset[69])
-print(model(torch.from_numpy(train_dataset[69][0])))
+# print(train_dataset.len)
+# print(train_dataset[69])
+# print(model(torch.from_numpy(train_dataset[69][0])))
 

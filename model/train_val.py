@@ -41,8 +41,7 @@ def train(model, train_loader, val_loader, optimizer, criterion, device, num_epo
                 # Compute the logits and loss
                 logits = model(inputs)
                 loss = criterion(logits, labels)
-                if (i % 20 == 0): print(str(i) + " " + str(loss))
-                i += 1
+                
                 # Backpropagate the loss
                 loss.backward()
 

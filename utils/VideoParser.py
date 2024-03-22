@@ -80,6 +80,6 @@ for i, video in enumerate(raw_paths):
         else:
             # print(temp)
             #np.save(temp + "/" + str(j) + "-r", frame[1])
-            np.save(temp + slash + str(j) + "-r", frame[0])
+            np.save(temp + slash + str(j) + "-r", frame[1])
             # print("right")
             # print(frame[1])
