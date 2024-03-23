@@ -20,6 +20,7 @@ class MediaGesture(nn.Module):
         torch.nn.init.xavier_uniform_(self.fc1.weight, gain=nn.init.calculate_gain('relu'))
         torch.nn.init.xavier_uniform_(self.fc2.weight, gain=nn.init.calculate_gain('relu'))
         torch.nn.init.xavier_uniform_(self.fc3.weight, gain=nn.init.calculate_gain('relu'))
+        torch.nn.init.xavier_uniform_(self.fc4.weight, gain=nn.init.calculate_gain('relu'))
 
         self.relu = nn.LeakyReLU()
         
