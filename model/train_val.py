@@ -24,6 +24,10 @@ def train(model, train_loader, val_loader, optimizer, criterion, device, num_epo
     # Place model on device
     model = model.to(device)
 
+    losses = []
+    accuracies = []
+    epochs = list(range(num_epochs))
+
     for epoch in range(num_epochs):
         model.train()  # Set model to training mode
 
@@ -41,7 +45,7 @@ def train(model, train_loader, val_loader, optimizer, criterion, device, num_epo
                 # Compute the logits and loss
                 logits = model(inputs)
                 loss = criterion(logits, labels)
-                
+
                 # Backpropagate the loss
                 loss.backward()
 
@@ -54,7 +58,13 @@ def train(model, train_loader, val_loader, optimizer, criterion, device, num_epo
 
         # Evaluate the model on the validation set
         avg_loss, accuracy = evaluate(model, val_loader, criterion, device)
+
+        accuracies.append(accuracy)
+        losses.append(avg_loss)
+
         print(f'Validation set: Average loss = {avg_loss:.4f}, Accuracy = {accuracy:.4f}')
+    return epochs, accuracies, losses
+
 
 def evaluate(model, test_loader, criterion, device):
     """

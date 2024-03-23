@@ -3,24 +3,23 @@ from train_val import *
 import torch.nn as nn
 import torch
 
-NUM_LABELS = 2
+import matplotlib.pyplot as plt
+
+NUM_LABELS = 3
 
 
 class MediaGesture(nn.Module):
     def __init__(self):
         super().__init__()
-        self.fc1 = None
-        self.fc2 = None
-        self.fc3 = None
 
         self.fc1 = nn.Linear(63, 32)
         self.fc2 = nn.Linear(32, 16)
         self.fc3 = nn.Linear(16, 8)
         self.fc4 = nn.Linear(8, NUM_LABELS)
 
-        torch.nn.init.xavier_uniform_(self.fc1.weight, gain=nn.init.calculate_gain('relu'))
-        torch.nn.init.xavier_uniform_(self.fc2.weight, gain=nn.init.calculate_gain('relu'))
-        torch.nn.init.xavier_uniform_(self.fc3.weight, gain=nn.init.calculate_gain('relu'))
+        # torch.nn.init.xavier_uniform_(self.fc1.weight, gain=nn.init.calculate_gain('relu'))
+        # torch.nn.init.xavier_uniform_(self.fc2.weight, gain=nn.init.calculate_gain('relu'))
+        # torch.nn.init.xavier_uniform_(self.fc3.weight, gain=nn.init.calculate_gain('relu'))
         self.relu = nn.LeakyReLU()
         
 
@@ -83,7 +82,12 @@ val_loader = torch.utils.data.DataLoader(
 # Train the model
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-train(model, train_loader, val_loader, optimizer, criterion, device, num_epochs=10)
+epochs, accuracies, losses = train(model, train_loader, val_loader, optimizer, criterion, device, num_epochs=10)
+
+plt.plot(epochs, losses, label="Loss")
+plt.plot(epochs, accuracies, label="Accuracy")
+plt.legend()
+plt.show()
 
 # print(train_dataset.len)
 # print(train_dataset[69])
