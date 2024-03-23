@@ -48,11 +48,16 @@ After you have recorded your training videos. Move them under the directory `./r
 
 Once you have moved all of the videos, run `VideoParser.py`. This will take all the videos, load them, and then pass them to `process_video.py` for processing each frame. They will then get saved as a numpy array to disk with a .npy file.
 
-Note: the directory structure of the `parsed_data` folder will mirror the folder structure of `raw_videos`. Each video will get their own folder and each frame will be saved in one or two files depending on how many hands are present.
+Note: the directory structure of the `unsorted_data` folder will mirror the folder structure of `raw_videos`. Each video will get their own folder and each frame will be saved in one or two files depending on how many hands are present.
 
 The naming scheme of data files are "frameNum-handedness.npy"
 
 After the parser is finished you can proceed to the dataset.
 
+Enter the `unsorted_data` folder and sort them into training/validation sets in the `parsed_data` folder as you wish.  This is not done automatically.  Refer to the sample data (explained below) as an example.
+
 ### Loading the dataset
 The `HandLandMarkDataset.py` file contains the necessary class derivation to be a valid dataset class for pytorch.
+
+### Sample Data
+Some sample data is provided in the repository in `parsed_data.zip`.  Unzip the folder to use it.  This data has been manually divided into training and validation samples.  Data is saved as .npy files (ndarrays in file form), and are generated from videos using `VideoParser.py`.  Raw videos are not included.

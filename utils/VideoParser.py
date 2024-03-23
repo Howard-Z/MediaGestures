@@ -11,7 +11,7 @@ elif sys.platform == 'win32' or sys.platform == 'cygwin':
 base_path = get_root_dir()
 
 raw_path = os.path.join(base_path, "raw_videos")
-parsed_path = os.path.join(base_path, "parsed_data")
+parsed_path = os.path.join(base_path, "unsorted_data")
 
 raw_paths = []
 parsed_paths = []
@@ -28,7 +28,7 @@ def extension_remover(path):
 for root, d_names, f_names in os.walk(raw_path):
     for f in f_names:
         temp = os.path.join(root, f)
-        removed = root.replace("raw_videos", "parsed_data")
+        removed = root.replace("raw_videos", "unsorted_data")
         parsed_paths.append(removed + slash + f)
         new_dirs.add(removed)
         raw_paths.append(temp)
