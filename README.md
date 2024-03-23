@@ -61,3 +61,6 @@ The `HandLandMarkDataset.py` file contains the necessary class derivation to be 
 
 ### Sample Data
 Some sample data is provided in the repository in `parsed_data.zip`.  Unzip the folder to use it.  This data has been manually divided into training and validation samples.  Data is saved as .npy files (ndarrays in file form), and are generated from videos using `VideoParser.py`.  Raw videos are not included.
+
+### Disclaimer about grading:
+We plan to build this bigger!  This is by no means the final product as we plan to eventually expand this to a full application.  As a result, there may be commits "past the deadline" of the project.  If required, please grade using the commit titled "188 Project Version" in the commit history.
