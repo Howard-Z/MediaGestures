@@ -9,18 +9,7 @@ import numpy as np
 
 
 def train(model, train_loader, val_loader, optimizer, criterion, device, num_epochs):
-    """
-    Train the MLP classifier on the training set and evaluate it on the validation set every epoch.
 
-    Args:
-        model (MLP): MLP classifier to train.
-        train_loader (torch.utils.data.DataLoader): Data loader for the training set.
-        val_loader (torch.utils.data.DataLoader): Data loader for the validation set.
-        optimizer (torch.optim.Optimizer): Optimizer to use for training.
-        criterion (callable): Loss function to use for training.
-        device (torch.device): Device to use for training.
-        num_epochs (int): Number of epochs to train the model.
-    """
     # Place model on device
     model = model.to(device)
 
@@ -67,19 +56,6 @@ def train(model, train_loader, val_loader, optimizer, criterion, device, num_epo
 
 
 def evaluate(model, test_loader, criterion, device):
-    """
-    Evaluate the MLP classifier on the test set.
-
-    Args:
-        model (MLP): MLP classifier to evaluate.
-        test_loader (torch.utils.data.DataLoader): Data loader for the test set.
-        criterion (callable): Loss function to use for evaluation.
-        device (torch.device): Device to use for evaluation.
-
-    Returns:
-        float: Average loss on the test set.
-        float: Accuracy on the test set.
-    """
     model.eval()  # Set model to evaluation mode
 
     with torch.no_grad():

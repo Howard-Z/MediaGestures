@@ -37,18 +37,6 @@ class HandLandmarkDataset(Dataset):
             idx = idx.tolist()
         sample = np.load(self.file_paths[idx], allow_pickle=True)
         sample = sample.astype(np.float32)
-        # sample = self.__normalize(sample)
         label = self.labels[idx]
 
         return sample, label # ndarray, int
-        
-# tester = HandLandmarkDataset(get_root_dir() + "/parsed_data")
-# temp = os.path.join(get_root_dir(), "parsed_data")
-# tester = HandLandmarkDataset(os.path.join(get_root_dir(), "parsed_data"))
-# sample, label = tester[0]
-
-# for i in range(len(tester)):
-#     assert(not np.isnan(np.sum(tester[i][0])))
-
-# print(sample)
-# print(label)

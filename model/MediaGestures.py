@@ -17,12 +17,12 @@ class MediaGesture(nn.Module):
         self.fc3 = nn.Linear(16, 8)
         self.fc4 = nn.Linear(8, NUM_LABELS)
 
-        # torch.nn.init.xavier_uniform_(self.fc1.weight, gain=nn.init.calculate_gain('relu'))
-        # torch.nn.init.xavier_uniform_(self.fc2.weight, gain=nn.init.calculate_gain('relu'))
-        # torch.nn.init.xavier_uniform_(self.fc3.weight, gain=nn.init.calculate_gain('relu'))
+        torch.nn.init.xavier_uniform_(self.fc1.weight, gain=nn.init.calculate_gain('relu'))
+        torch.nn.init.xavier_uniform_(self.fc2.weight, gain=nn.init.calculate_gain('relu'))
+        torch.nn.init.xavier_uniform_(self.fc3.weight, gain=nn.init.calculate_gain('relu'))
+
         self.relu = nn.LeakyReLU()
         
-
     def forward(self, x):
         out = self.fc1(x)
         out = self.relu(out)
@@ -88,8 +88,3 @@ plt.plot(epochs, losses, label="Loss")
 plt.plot(epochs, accuracies, label="Accuracy")
 plt.legend()
 plt.show()
-
-# print(train_dataset.len)
-# print(train_dataset[69])
-# print(model(torch.from_numpy(train_dataset[69][0])))
-
