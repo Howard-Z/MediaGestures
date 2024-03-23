@@ -55,7 +55,7 @@ model = MediaGesture()
 
 optimizer = torch.optim.SGD(
     model.parameters(),
-    lr=1e-4,)
+    lr=1e-2,)
 
 criterion = nn.CrossEntropyLoss()
 
@@ -64,9 +64,9 @@ criterion = nn.CrossEntropyLoss()
 
 # tester = HandLandmarkDataset(os.path.join(get_root_dir(), "parsed_data"))
 
-train_dataset = HandLandmarkDataset(os.path.join(get_root_dir(), "parsed_data"))
+train_dataset = HandLandmarkDataset(os.path.join(get_root_dir(), "parsed_data", "train"))
 
-val_dataset = HandLandmarkDataset(os.path.join(get_root_dir(), "parsed_data"))
+val_dataset = HandLandmarkDataset(os.path.join(get_root_dir(), "parsed_data", "val"))
 
 # Define the batch size and number of workers
 batch_size = 64
